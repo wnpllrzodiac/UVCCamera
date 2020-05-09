@@ -40,6 +40,8 @@ import com.serenegiant.usb.USBMonitor;
 import com.serenegiant.usb.USBMonitor.OnDeviceConnectListener;
 import com.serenegiant.usb.USBMonitor.UsbControlBlock;
 import com.serenegiant.usb.UVCCamera;
+import com.serenegiant.usb.IFrameCallback;
+import java.nio.ByteBuffer;
 
 public class MainActivity extends BaseActivity implements CameraDialog.CameraDialogParent {
 	private static final boolean DEBUG = true;	// TODO set false when production
@@ -125,6 +127,17 @@ public class MainActivity extends BaseActivity implements CameraDialog.CameraDia
 		}
 	};
 
+    private final IFrameCallback mIFrameCallback = new IFrameCallback() {
+            @Override
+            public void onFrame(final ByteBuffer frame) {
+                int len = frame.capacity();
+                final byte[] yuv = new byte[len];
+                frame.get(yuv);
+                // nv21 yuv data callback
+                Toast.makeText(MainActivity.this, "onFrame: " + yuv.length, Toast.LENGTH_SHORT).show();
+            }
+        };
+    
 	private final OnDeviceConnectListener mOnDeviceConnectListener = new OnDeviceConnectListener() {
 		@Override
 		public void onAttach(final UsbDevice device) {
@@ -154,6 +167,7 @@ public class MainActivity extends BaseActivity implements CameraDialog.CameraDia
 							try {
 								// fallback to YUV mode
 								camera.setPreviewSize(UVCCamera.DEFAULT_PREVIEW_WIDTH, UVCCamera.DEFAULT_PREVIEW_HEIGHT, UVCCamera.DEFAULT_PREVIEW_MODE);
+                                camera.setFrameCallback(mIFrameCallback, UVCCamera.PIXEL_FORMAT_NV21);
 							} catch (final IllegalArgumentException e1) {
 								camera.destroy();
 								return;

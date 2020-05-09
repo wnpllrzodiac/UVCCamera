@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-//		google()
+		//google()
 		maven { url 'https://maven.google.com' }
         jcenter()
     }
@@ -12,7 +12,7 @@ buildscript {
 
 allprojects {
     repositories {
-//    	google()
+    	//google()
 		maven { url 'https://maven.google.com' }
 		jcenter()
 		maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
@@ -26,9 +26,9 @@ task clean(type: Delete) {
 ext {
 	supportLibVersion = '27.1.1'  // variable that can be referenced to keep support libs consistent
 	commonLibVersion= '2.12.4'
-	versionBuildTool = '27.0.3'
-	versionCompiler = 27
-	versionTarget = 27
+	versionBuildTool = '29.0.2'
+	versionCompiler = 29
+	versionTarget = 29
 	versionNameString = '1.0.0'
 	javaSourceCompatibility = JavaVersion.VERSION_1_8
 	javaTargetCompatibility = JavaVersion.VERSION_1_8
